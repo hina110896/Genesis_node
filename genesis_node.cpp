@@ -1,8 +1,4 @@
 #include<bits/stdc++.h>
-#include <iostream>
-#include <time.h>
-#include<vector>
-#include<string.h>
 using namespace std;
 struct Owner{
 	string name;
@@ -11,13 +7,13 @@ struct Owner{
 	string phone;
 	float value;
 	string password;
-	int ownerNumb;
+	int ownerNum;
 	
 };
 struct Node{
 	time_t dt;
 	Owner *owner;
-	int nodeNumb;
+	int nodeNum;
 	int nodeId;
 	Node *refNodeId;
 	vector<int> childNodeId;
@@ -28,7 +24,7 @@ Node *getNode(int num,Owner *own){
 	Node *np=new Node;
 	np->dt=time(0);
 	np->owner=own;
-	np->nodeNumb=num;
+	np->nodeNum=num;
 	np->nodeId=(num);
 	vector<Node*> v;
 	np->refChildNodeId=v;
@@ -48,8 +44,8 @@ void query3(Node *child,int id,vector<Node*> &v){
 		}	
 	}
 }
-string encrypt(string st,int n){
-	string sol=st;
+string encrypt(string s,int n){
+	string sol=s;
 	for(int i=0;i<sol.length();i++){
 		sol[i]+=n;
 	}
@@ -62,16 +58,16 @@ string decrypt(string data,int n){
 	}
 	return sol;
 }
-Owner *getOwner(int num,string name1, string address1, string mobile1, string phone1, float value1,string pass1){
+Owner *getOwner(int num,string name, string address, string mobile, string phone, float value,string pass){
 	
 	Owner *own=new Owner;
-	own->ownerNumb=num;
-	own->address=encrypt(address1,num);
-	own->address=encrypt(name1,num);
-	own->address=encrypt(mobile1,num);
-	own->address=encrypt(phone1,num);
+	own->ownerNum=num;
+	own->address=encrypt(address,num);
+	own->address=encrypt(name,num);
+	own->address=encrypt(mobile,num);
+	own->address=encrypt(phone,num);
 	own->value=value;
-	own->password=encrypt(pass1,num);
+	own->password=encrypt(pass,num);
 	return own;	
 }
 bool query4(vector<Owner*> &owners,Owner *currOwner,vector<Node*> &v){
@@ -90,9 +86,8 @@ bool query4(vector<Owner*> &owners,Owner *currOwner,vector<Node*> &v){
 		
 			return f;
 }
-//deleting particular node using nodeId
 void query5(vector<Owner*> &owners, Owner *currOwner, vector<Node*> &v){
-	cout<<"Enter nodeId"<<endl;
+	cout<<"Enter nodeId of node to be deleted: "<<endl;
 	int id;
 	cin>>id;
 	bool f=false;
@@ -112,7 +107,7 @@ void query5(vector<Owner*> &owners, Owner *currOwner, vector<Node*> &v){
 				}
 				
 			}else{
-				cout<<"Owner not recognized"<<endl;
+				cout<<"you are not the owner of this node"<<endl;
 				return;
 			}
 			break;
@@ -125,9 +120,9 @@ void query5(vector<Owner*> &owners, Owner *currOwner, vector<Node*> &v){
 	}
 }
 void query6(vector<Owner*> &owners,Owner *currOwner, vector<Node*> &v){
-	cout<<"Enter NodeId and UserId: "<<endl;
-	int id,userIden;
-	cin>>id>>userIden;
+	cout<<"Enter nodeId and userId: "<<endl;
+	int id,userId;
+	cin>>id>>userId;
 	bool f=false;
 	for(int i=0;i<v.size();i++){
 		if(v[i]->nodeId==id){
@@ -136,7 +131,7 @@ void query6(vector<Owner*> &owners,Owner *currOwner, vector<Node*> &v){
 				
 				Node *np=v[i];
 				for(int k=0;k<owners.size();k++){
-					if(owners[k]->ownerNumb==userIden){
+					if(owners[k]->ownerNum==userId){
 						np->owner=owners[k];
 						f=true;
 						break;
@@ -144,29 +139,29 @@ void query6(vector<Owner*> &owners,Owner *currOwner, vector<Node*> &v){
 				}
 				
 			}else{
-				cout<<"You are not the owner of this node"<<endl;
+				cout<<"you are not the owner of this node"<<endl;
 				return;
 			}
 			break;
 		}
 	}
 	if(f){
-		cout<<"Node Owner changed"<<endl;
+		cout<<"node Owner changed"<<endl;
 	}else{
-		cout<<"Node not found"<<endl;
+		cout<<"node not found"<<endl;
 	}
 }
 void query7(vector<Node*> v){
 	
 }
-void dfs(Node *root,int &n,int nums){
+void dfs(Node *root,int &n,int num){
 	if(root==NULL){
-		n=max(n,nums);
+		n=max(n,num);
 	}
-	int count=nums+1;
+	int count=num+1;
 	vector<Node*> child=root->refChildNodeId;
 	for(int i=0;i<child.size();i++){
-		dfs(child[i],n,nums+1);
+		dfs(child[i],n,num+1);
 	}
 	n=max(n,count);
 }
@@ -209,25 +204,25 @@ int main(){
     bool f=false;
     
     while(!f){
-    	cout<<"Enter: 1 to login / 2 to signup";
+    	cout<<"Enter 1 to login 2 to signup";
     	
     cin>>q;
     	if(q==1){
-			cout<<"Enter Password and key";
+			cout<<"enter password and key";
 	    	string pass;
 	    	int key;
 	    	cin>>pass;
 	    	cin>>key;
 	    	for(int i=0;i<owners.size();i++){
-	    		if(owners[i]->ownerNumb==key){
-	    			if(pass==decrypt(owners[i]->password,owners[i]->ownerNumb)){
+	    		if(owners[i]->ownerNum==key){
+	    			if(pass==decrypt(owners[i]->password,owners[i]->ownerNum)){
 	    				f=true;
 	    				currOwner=owners[i];
 	    				break;
 					}
 				}
 			}
-			cout<<"LOGIN failed"<<endl;
+			cout<<"unable to login"<<endl;
 		}else{
 			cout<<"Enter name, address, mobile,phone, value, password:"<<endl;
 			string name,address,mobile,phone,pass;
@@ -237,24 +232,24 @@ int main(){
 			cin>>pass;
 			currOwner=getOwner(nOwners++,name, address, mobile, phone, value,pass);
 			owners.push_back(currOwner);
-			cout<<"your key is "<<currOwner->ownerNumb<<endl;
+			cout<<"your key is "<<currOwner->ownerNum<<endl;
 			f=true;
 		}
 	}
     
     
     while(1){
-    	cout<<"Enter the Query: ";
+    	cout<<"Enter Query: ";
 		cin>>q;
 		if(q==1){
-			//create genesis node 
+			//push a hardcoded first node 
 			vector<Node*> v;
 			v.push_back(getNode(num++,currOwner));
 			set.push_back(v);
 		}else if(q==2){
-			//push a set of child nodes
+			//push a set of first nodes
 			int n=0;
-			cout<<"Enter the number of nodes: ";
+			cout<<"Enter number of nodes: ";
 			cin>>n;
 			vector<Node*> v(1);
 			for(int i=0;i<n;i++){
@@ -284,7 +279,7 @@ int main(){
 				cout<<"you are not owner"<<endl;
 			}
 		}else if(q==5){
-			//edit the node/ delete node 
+			//break up a node 
 			query5(owners,currOwner,v);
 			
 		}else if(q==6){
@@ -293,7 +288,7 @@ int main(){
 			
 			
 		}else if(q==7){
-			//longest chain of genesis node
+			//longest chain of main node
 			int mx=-1;
 			for(int i=0;i<set.size();i++){
 				
@@ -322,7 +317,7 @@ int main(){
 			}
 		}else if(q==9){
 			//merge nodes
-			cout<<"Enter 1st and 2nd set no."<<endl;
+			cout<<"enter 1st and 2nd set number"<<endl;
 			int f,s;
 			cin>>f>>s;
 			mergeSet(set[f],set[s],currOwner);
