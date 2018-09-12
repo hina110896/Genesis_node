@@ -17,7 +17,7 @@ struct Owner{
 struct Node{
 	time_t dt;
 	Owner *owner;
-	int nodeNum;
+	int nodeNumb;
 	int nodeId;
 	Node *refNodeId;
 	vector<int> childNodeId;
@@ -28,7 +28,7 @@ Node *getNode(int num,Owner *own){
 	Node *np=new Node;
 	np->dt=time(0);
 	np->owner=own;
-	np->nodeNum=num;
+	np->nodeNumb=num;
 	np->nodeId=(num);
 	vector<Node*> v;
 	np->refChildNodeId=v;
