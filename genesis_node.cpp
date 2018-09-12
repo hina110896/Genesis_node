@@ -20,12 +20,12 @@ struct Node{
 	vector<Node*> refChildNodeId;
 	
 };
-Node *getNode(int num,Owner *own){
+Node *getNode(int number,Owner *owner){
 	Node *np=new Node;
 	np->dt=time(0);
-	np->owner=own;
-	np->nodeNum=num;
-	np->nodeId=(num);
+	np->owner=owner;
+	np->nodeNum=number;
+	np->nodeId=(number);
 	vector<Node*> v;
 	np->refChildNodeId=v;
 	np->refNodeId=NULL;
@@ -34,18 +34,18 @@ Node *getNode(int num,Owner *own){
 	return np;
 }
 
-void query3(Node *child,int id,vector<Node*> &v){
-	for(int i=0;i<v.size();i++){
-		if(v[i]->nodeId==id){
-			v[i]->refChildNodeId.push_back(child);
-			v[i]->childNodeId.push_back(child->nodeId);
-			child->refNodeId=v[i];
+void query3(Node *child,int id,vector<Node*> &vector){
+	for(int i=0;i<vector.size();i++){
+		if(vector[i]->nodeId==id){
+			vector[i]->refChildNodeId.push_back(child);
+			vector[i]->childNodeId.push_back(child->nodeId);
+			child->refNodeId=vector[i];
 			break;
 		}	
 	}
 }
-string encrypt(string s,int n){
-	string sol=s;
+string encrypt(string str,int n){
+	string sol=str;
 	for(int i=0;i<sol.length();i++){
 		sol[i]+=n;
 	}
@@ -58,16 +58,16 @@ string decrypt(string data,int n){
 	}
 	return sol;
 }
-Owner *getOwner(int num,string name, string address, string mobile, string phone, float value,string pass){
+Owner *getOwner(int numb,string name, string address, string mobile, string phone, float value,string pass){
 	
 	Owner *own=new Owner;
-	own->ownerNum=num;
-	own->address=encrypt(address,num);
-	own->address=encrypt(name,num);
-	own->address=encrypt(mobile,num);
-	own->address=encrypt(phone,num);
+	own->ownerNum=numb;
+	own->address=encrypt(address,numb);
+	own->address=encrypt(name,numb);
+	own->address=encrypt(mobile,numb);
+	own->address=encrypt(phone,numb);
 	own->value=value;
-	own->password=encrypt(pass,num);
+	own->password=encrypt(pass,numb);
 	return own;	
 }
 bool query4(vector<Owner*> &owners,Owner *currOwner,vector<Node*> &v){
