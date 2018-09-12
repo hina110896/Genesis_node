@@ -240,14 +240,24 @@ int main(){
     
     while(1){
     	cout<<"Enter Query: ";
-		cin>>q;
+        cout<<"1.Create a genesis node:";
+	cout<<"2.Create a set of child nodes";
+	    cout<<"3.Create a child node that originates from a particular node";
+	    cout<<"4.Encrypt and decrypt the data inside the node";
+	    cout<<"5.Verify the owner ";
+	    cout<<"6.Edit the value of node";
+	    cout<<"7.Transfer ownership of particular node";
+	    cout<<"8.longest chain of genesis node";
+	    cout<<"9.longest chain of sub node";
+	    cout<<"10.merge 2 nodes";
+	    cin>>q;
 		if(q==1){
-			//push a hardcoded first node 
+			//Create a genesis node
 			vector<Node*> v;
 			v.push_back(getNode(num++,currOwner));
 			set.push_back(v);
 		}else if(q==2){
-			//push a set of first nodes
+			//Create a set of child nodes
 			int n=0;
 			cout<<"Enter number of nodes: ";
 			cin>>n;
@@ -258,7 +268,7 @@ int main(){
 			}
 			cout<<"nodes pushed"<<endl;
 		}else if(q==3){
-			//adding node to any set
+			//Create a child node that originates from a particular node
 			Node *np=getNode(num++,currOwner);
 			v.push_back(np);
 			cout<<"Enter setNo: ";
@@ -266,7 +276,17 @@ int main(){
 			cin>>setNo;
 			set[setNo].push_back(np);
 			
-		}else if(q==4){
+		}
+	    else if(q==4){
+			//Encryption & decryption of data
+			String str1,str2,str3;
+		    int n=0;
+		    str1=owners->address;
+		    str2=encrypt(str1,n);
+		    str3=decrypt(str2,n);
+			}
+			
+		}else if(q==5){
 			//verify owner
 			bool f=false;
 			for(int i=0;i<set.size();i++){
@@ -278,17 +298,18 @@ int main(){
 			if(!f){			
 				cout<<"you are not owner"<<endl;
 			}
-		}else if(q==5){
-			//break up a node 
-			query5(owners,currOwner,v);
 			
 		}else if(q==6){
-			// transfer owner
+			//Edit the value of node 
+			query5(owners,currOwner,v);
+			
+		}else if(q==7){
+			// Transfer ownership of particular node
 			query6(owners,currOwner,v);
 			
 			
-		}else if(q==7){
-			//longest chain of main node
+		}else if(q==8){
+			//longest chain of genesis node
 			int mx=-1;
 			for(int i=0;i<set.size();i++){
 				
@@ -296,7 +317,7 @@ int main(){
 			}
 			cout<<"max chain="<<mx<<endl;
 			
-		}else if(q==8){
+		}else if(q==9){
 			//longest chain of sub node
 			cout<<"enter node id"<<endl;
 			int id;
@@ -315,17 +336,13 @@ int main(){
 					break;	
 				}
 			}
-		}else if(q==9){
-			//merge nodes
+		}else if(q==10){
+			//merge 2 nodes
 			cout<<"enter 1st and 2nd set number"<<endl;
 			int f,s;
 			cin>>f>>s;
 			mergeSet(set[f],set[s],currOwner);
 			
-		}else if(q==10){
-			//log out
-			currOwner=NULL;
-			goto St;
 		}else {
 			break;
 		}
